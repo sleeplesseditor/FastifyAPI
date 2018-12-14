@@ -3,6 +3,7 @@ const fastify = require('fastify')({
 });
 const mongoose = require('mongoose');
 const db = require('../config/keys').mongoURI;
+const routes = require('./routes');
   
 fastify.get('/', async (request, reply) => {
     return { hello: 'world' }
@@ -11,6 +12,10 @@ fastify.get('/', async (request, reply) => {
 mongoose.connect(db)
   .then(() => console.log('MongoDB connected...'))
   .catch(err => console.log(err))
+
+routes.forEach((route, index) => {
+    fastify.route(route)
+});
   
 const start = async () => {
     try {
